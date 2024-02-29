@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang = "ko" >
+<head >
+	<meta charset = "UTF-8" >
+	<meta name = "viewport"
+		  content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" >
+	<meta http-equiv = "X-UA-Compatible" content = "ie=edge" >
+	<title layout:title-pattern = "$CONTENT_TITLE | $LAYOUT_TITLE" th:text = "Heal_Mingle" ></title >
+
+	<!-- 제이쿼리 불러오기 -->
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" ></script >
+
+	<!-- toastr 불러오기 -->
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" ></script >
+	<link rel = "stylesheet" href = "https://jhs512.github.io/toastr/toastr.css" >
+
+	<!-- 폰트어썸 아이콘 -->
+	<link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" >
+
+	<!-- 테일윈드 , 데이지 UI-->
+	<link href = "https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel = "stylesheet" type = "text/css" />
+	<script src = "https://cdn.tailwindcss.com" ></script >
+
+	<!-- 글꼴 -->
+	<link href = "https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel = "stylesheet" />
+
+	<!--  풀페이지 css, js -->
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.0/fullpage.min.js"
+			integrity = "sha512-HqbDsHIJoZ36Csd7NMupWFxC7e7aX2qm213sX+hirN+yEx/eUNlZrTWPs1dUQDEW4fMVkerv1PfMohR1WdFFJQ=="
+			crossorigin = "anonymous" ></script >
+	<link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.0/fullpage.css"
+		  integrity = "sha512-hGBKkjAVJUXoImyDezOKpzuY4LS1eTvJ4HTC/pbxn47x5zNzGA1vi3vFQhhOehWLTNHdn+2Yqh/IRNPw/8JF/A=="
+		  crossorigin = "anonymous" />
+
+	<!-- 버튼, 글꼴 스타일 -->
+	<style >
+		@font-face {
+			font-family: 'GmarketSansMedium';
+			src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+			font-weight: normal;
+			font-style: normal;
+		}
+
+		html > body {
+			font-family: "GmarketSansMedium";
+			text-underline-position: under;
+		}
+
+		  button {
+		  margin: 20px;
+		  outline: none;
+		}
+		.custom-btn {
+		  height: 40px;
+		  padding: 10px 25px;
+		  border: 2px solid #000;
+		  background: transparent;
+		  cursor: pointer;
+		  transition: all 0.3s ease;
+		  position: relative;
+		  display: inline-block;
+		}
+
+		/* 5 */
+		.btn-5 {
+		  line-height: 42px;
+		  padding: 0;
+		  border: none;
+		}
+		.btn-5:hover {
+		  background: transparent;
+		  color: #000;
+		  box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9,
+			7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
+		}
+		.btn-5:before,
+		.btn-5:after {
+		  content: "";
+		  position: absolute;
+		  top: 0;
+		  right: 0;
+		  height: 2px;
+		  width: 0;
+		  background: #000;
+		  transition: 400ms ease all;
+		}
+		.btn-5:after {
+		  right: inherit;
+		  top: inherit;
+		  left: 0;
+		  bottom: 0;
+		}
+		.btn-5:hover:before,
+		.btn-5:hover:after {
+		  width: 100%;
+		  transition: 800ms ease all;
+		}
+
+	</style >
+</head >
+<body >
+
+<div >
+	<header >
+		<!-- navbar -->
+		<div class = "navbar shadow-md shadow-inner flex justify-between" >
+			<!--  logo  -->
+			<div class = "p-2 w-72 h-16" >
+				<img src = "/logoImg/NoColorLogo.png" alt = "로고" >
+			</div >
+			<!--  menu  -->
+			<div class = "flex justify-evenly w-full text-lg" >
+				<div >
+					<a href = "#" >자유 게시판</a >
+				</div >
+				<div >
+					<a href = "#" >공지사항</a >
+				</div >
+			</div >
+			<!--  profile img/ search input  -->
+			<div class = "p-3" >
+				<div class = "flex items-center md:ml-auto md:pr-4" >
+					<div class = "relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft" >
+						<input type = "text"
+							   class = "pl-3 text-sm focus:outline-slate-500 placeholder:text-slate-500 ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid  bg-clip-padding py-2 pr-3 transition-all focus:outline-none focus:transition-shadow"
+							   placeholder = "🔍     궁금을 검색하세요" />
+					</div >
+				</div >
+				<div class = "dropdown dropdown-end" >
+					<div tabindex = "0" role = "button" class = "btn btn-ghost btn-circle avatar" >
+						<div class = "w-10 rounded-full" >
+							<img alt = "Tailwind CSS Navbar component"
+								 src = "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+						</div >
+					</div >
+					<ul tabindex = "0"
+						class = "menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52" >
+						<li >
+							<a class = "justify-between" >
+								내 정보
+							</a >
+						</li >
+						<li ><a >관리자</a ></li >
+						<li ><a href = "/usr/member/join" >회원가입</a ></li >
+						<li ><a >로그인</a ></li >
+						<li ><a >로그아웃</a ></li >
+					</ul >
+				</div >
+			</div >
+		</div >
+	</header >
+	<!-- fragment -->
+	<main class = "mb-3" >
+		<th:block layout:fragment = "content" ></th:block >
+	</main >
+</div >
+
+</body >
+</html >
