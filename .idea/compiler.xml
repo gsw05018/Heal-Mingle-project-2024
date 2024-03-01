@@ -17,10 +17,6 @@
         <module name="healMingle.healMingle.main~1" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="healMingle.healMingle.main" target="17" />
-      <module name="healMingle.healMingle.test" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="-parameters" />
