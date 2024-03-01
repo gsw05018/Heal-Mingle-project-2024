@@ -171,11 +171,11 @@
         return url.searchParams.get('failMsg');
     }
 
-    const message = getMsgFromURL();
+    const msg = getMsgFromURL();
 
     // msg 파라미터의 값이 있으면 toastr로 알림을 표시
-    if (message) {
-        toastNotice(decodeURIComponent(message));
+    if (msg) {
+        toastNotice(decodeURIComponent(msg));
     }
 
     const failMsg = getFailMsgFromURL();
@@ -184,6 +184,30 @@
     if (failMsg) {
         toastWarning(decodeURIComponent(failMsg));
     }
+
+	// historyBack 으로 인해 돌아온 경우 실행
+	// 페이지가 표시될 때마다 특정 조건 하에 로컬 스토리지에서 오류 메시지를 검색하여 화면에 표시하고, 해당 메시지를
+	// 로컬 스토리지에서 제거하는 기능을 수행
+	// 페이지가 새로 로드되거나 캐시에서 복원될 때 실행되는 이벤트 핸들러를 바인드합니다.
+	$(window).bind("pageshow", function (event){
+	  // 현재 페이지의 URL을 사용하여 로컬 스토리지 키를 생성합니다.
+	  let localStorageKeyAboutHistoryBackFailMsg = "historyBackFailMsg___" + location.href;
+
+	  // 해당 키에 대한 항목이 로컬 스토리지에 없는 경우, 'null'을 사용하여 기본 키를 설정합니다.
+	  if (!localStorage.getItem(localStorageKeyAboutHistoryBackFailMsg)) {
+		localStorageKeyAboutHistoryBackFailMsg = "historyBackFailMsg___null";
+	  }
+
+	  // 설정된 키를 사용하여 로컬 스토리지에서 오류 메시지를 검색합니다.
+	  const historyBackFailMsg = localStorage.getItem(localStorageKeyAboutHistoryBackFailMsg);
+	  // 오류 메시지가 존재하는 경우
+	  if (historyBackFailMsg) {
+		toastWarning(historyBackFailMsg);
+		// 오류 메시지를 화면에 표시합니다(toastr 라이브러리 사용).
+		localStorage.removeItem(localStorageKeyAboutHistoryBackFailMsg);
+		// 메시지를 표시한 후 해당 항목을 로컬 스토리지에서 제거합니다.
+	  }
+	});
 </script>
 
 </body >

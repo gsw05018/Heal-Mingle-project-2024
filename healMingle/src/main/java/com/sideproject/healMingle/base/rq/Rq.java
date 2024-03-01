@@ -183,7 +183,20 @@ public class Rq {
 
 	// 이전 페이지로 돌아가는 자바 스크립트를 실행하는 메서드
 	public String historyBack(String msg) {
-		req.setAttribute("msg", msg); // 메시지를 요청 속성으로 설정
+		// referer 헤더에서 이전 페이지의 URL을 가져온다
+		// 사용자가 현재 페이지로 오기 전에 마지막으로 방문한 페이지의 URL
+		String referer = req.getHeader ( "referer" );
+		// referer URL 기반으로 키를 생성한다
+		// 로컬 스토리지에 저장될 오류 메시지의 키로 사용됨
+		String key = "historyBackFailMsg___" + referer;
+		// 생성한 키를 요청 속성으로 설정한다
+		// 클라이언트 사이트 스크립트에서 로컬 스토리지에 접근할 때 사용됨
+		req.setAttribute("localStorageKeyAboutHistoryBackFailMsg", key);
+		// 오류 메시지를 요청 속성으로 설정
+		// 클라이언트 사이드에서 사용자에게 보여줄 수 있다
+		req.setAttribute ( "historyBackFailMsg", msg );
+		// 응답 코드를  400으로 설정
+		resp.setStatus ( HttpServletResponse.SC_BAD_REQUEST );
 
 		return "common/js";
 	}
