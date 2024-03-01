@@ -24,6 +24,11 @@
         toastr["success"](msg, "알림"); // toastr 라이브러리의 success 메서드를 사용하여 "알림" 제목으로 성공 메시지를 표시합니다.
     }
 
+    function toastMsg(isNotice, msg){
+        if(isNotice) toastNotice(msg);
+        else toastWarning(msg);
+    }
+
     // 경고 알림을 표시하는 함수를 정의합니다.
     function toastWarning(msg) {
         toastr["warning"](msg, "알림"); // toastr 라이브러리의 warning 메서드를 사용하여 "알림" 제목으로 경고 메시지를 표시합니다.
