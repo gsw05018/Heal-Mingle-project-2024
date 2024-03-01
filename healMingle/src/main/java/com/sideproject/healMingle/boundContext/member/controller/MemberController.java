@@ -1,7 +1,7 @@
 package com.sideproject.healMingle.boundContext.member.controller;
 
+import com.sideproject.healMingle.base.rq.Rq;
 import com.sideproject.healMingle.base.rsData.RsData;
-import com.sideproject.healMingle.base.ut.Ut;
 import com.sideproject.healMingle.boundContext.member.entity.Jop;
 import com.sideproject.healMingle.boundContext.member.entity.Member;
 import com.sideproject.healMingle.boundContext.member.service.MemberService;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController {
 
 	private final MemberService memberService;
+	private final Rq rq;
 
 	@GetMapping("/join")
 	public String showJoin() {
@@ -34,10 +35,10 @@ public class MemberController {
 	public String join( @Valid JoinForm joinForm) {
 		RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getNickname(), joinForm.getEmail (), joinForm.getJop ());
 		if (joinRs.isFail ()) {
-			return "redirect:/usr/member/join?failMsg=" + Ut.url.encode ( joinRs.getMsg () );
+			return rq.historyBack ( joinRs.getMsg () );
 		}
 
-		return "redirect:/?msg=" + Ut.url.encode ( joinRs.getMsg () );
+		return rq.redirect ( "/",joinRs.getMsg ());
 	}
 
 	@InitBinder
