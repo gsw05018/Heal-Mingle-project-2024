@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class HomeController {
 
-	@GetMapping("/main")
+	@GetMapping("/")
 	public String main(){
 		return "usr/home/main";
 	}
