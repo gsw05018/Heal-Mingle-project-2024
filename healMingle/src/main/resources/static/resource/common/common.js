@@ -49,3 +49,6 @@
         return [pureMsg, true]; // 만료되지 않았다면 순수 메시지와 함께 true를 반환합니다.
     }
 
+function setTimeoutZero(callback) {
+    setTimeout(callback);
+}
