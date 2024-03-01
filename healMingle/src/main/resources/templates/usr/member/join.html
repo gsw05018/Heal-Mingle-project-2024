@@ -26,31 +26,33 @@
 		<form th:action method="POST" name="join-form" onsubmit="submitJoinForm(this); return false;" class = "mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" >
 			<div class = "mb-1 flex flex-col gap-6" >
 				<!--      아이디    -->
-				<label class = "input input-bordered flex items-center gap-2" >
-					<i class="fa-solid fa-user  w-4 h-4 opacity-70"></i>
-					<input type = "text" class = "grow" placeholder = "Username" name = "username" autofocus maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());" onkeyup="$(this).removeClass('input-accent'); checkUsernameDupDebounce();">
-				</label >
+				<div class = "w-full" >
+					<input type="text" name="username" placeholder="username" class=" w-full input input-bordered" autofocus
+						   maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+						   onkeyup="checkUsernameDupDebounce();">
+					<div class="mt-2 text-sm"></div>
+				</div >
 
 				<!--      비밀번호    -->
-				<label class = "input input-bordered flex items-center gap-2" >
-					<i class="fa-solid fa-key  w-4 h-4 opacity-70"></i>
-					<input type = "password" class = "grow" placeholder = "password" name = "password" />
+				<label class = "w-full" >
+					<input type = "password" class = "w-full input input-bordered " placeholder = "password" name = "password" />
 				</label >
+
 				<!--      비밀번호 입력 확인    -->
-				<label class = "input input-bordered flex items-center gap-2" >
-					<i class="fa-solid fa-key  w-4 h-4 opacity-70"></i>
-					<input type = "password" class = "grow" placeholder = "password check" name = "passwordConfirm" />
+				<label class = "w-full" >
+					<input type = "password" class = "w-full input input-bordered" placeholder = "password check" name = "passwordConfirm" />
 				</label >
+
 				<!--      이메일    -->
-				<label class = "input input-bordered flex items-center gap-2" >
-					<i class = "fa-regular fa-envelope w-4 h-4 opacity-70" ></i >
-					<input type = "email" class = "grow" placeholder = "email" name = "email" />
+				<label class = "w-full" >
+					<input type = "email" class = "w-full input input-bordered" placeholder = "email" name = "email" />
 				</label >
+
 				<!--      별명    -->
-				<label class = "input input-bordered flex items-center gap-2" >
-					<i class = "fa-solid fa-user-tie w-4 h-4 opacity-70" ></i >
-					<input type = "text" class = "grow" placeholder = "nickname" name = "nickname" />
+				<label class = "w-full" >
+					<input type = "text" class = "w-full input input-bordered" placeholder = "nickname" name = "nickname" />
 				</label >
+
 				<!--      직업    -->
 				<div class = "w-full" >
 					<select class = "select select-bordered w-full font-semibold" name = "jop" >
@@ -72,137 +74,167 @@
 
 	<script >
 		function checkUsernameDup(form) {
+			 form.username.value = form.username.value.trim();
 
-			form.username.value = form.username.value.trim();
-
-			if( form.username.value.length == 0 ) return ;
-
-
-			 if ( form.username.value.length < 4 ) return ;
-
-                fetch(
-                    'checkUsernameDup?username=' + form.username.value
-                )
-                	.then(res => res.json())
-                    .then((rsData) => {
-                        if ( rsData.msg ) toastMsg(rsData.success, rsData.msg);
-                        if ( rsData.success ) {
-                            validUsername = form.username.value;
-                            $(form.username).addClass('input-accent');
-                        }
-                    });
-		}
-
-		const checkUsernameDupDebounce  = _.debounce(() => checkUsernameDup(document['join-form']), 1000);
-
-        let validUsername = '';
-		let submitJoinFormDone = false;
-		function submitJoinForm(form) {
-
-			if ( submitJoinFormDone ) return;
-		   // username 이(가) 올바른지 체크
-
-		   form.username.value = form.username.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
-
-		   if (form.username.value.length == 0) {
-			   form.username.focus();
-			   toastWarning('아이디를 입력해주세요.');
-			   return;
-		   }
-
-		   if (form.username.value.length < 4) {
-			   form.username.focus();
-			   toastWarning('아이디를 4자 이상 입력해주세요.');
-			   return;
-		   }
-
-		   // password 이(가) 올바른지 체크
-
-		   form.password.value = form.password.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
-
-		   if (form.password.value.length == 0) {
-			   form.password.focus();
-			   toastWarning('비밀번호를 입력해주세요.');
-			   return;
-		   }
-
-		   if (form.password.value.length < 4) {
-		   	   form.password.focus();
-			   toastWarning('비밀번호를 4자 이상 입력해주세요.');
-			   return;
-		   }
-
-		   // passwordConfirm 이(가) 올바른지 체크
-
-		   form.passwordConfirm.value = form.passwordConfirm.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
-
-		   if (form.passwordConfirm.value.length == 0) {
-			   form.passwordConfirm.focus();
-			   toastWarning('비밀번호 확인(을)를 입력해주세요.');
-			   return;
-		   }
-
-		   if (form.passwordConfirm.value.length < 4) {
-				form.passwordConfirm.focus();
-			    toastWarning('비밀번호 확인을(를) 4자 이상 입력해주세요.');
-			    return;
-		   }
-
-		   if ( form.password.value != form.passwordConfirm.value ) {
-                form.passwordConfirm.focus();
-                toastWarning('비밀번호를 확인이 일치하지 않습니다.');
-                return;
-           }
-
-            // email 이(가) 올바른지 체크
-
-		   form.email.value = form.email.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
-
-		   if (form.email.value.length == 0) {
-			   form.email.focus();
-			   toastWarning('이메일을(를) 입력해주세요.');
-			   return;
-		   }
-
-		   if (form.email.value.length < 4) {
-			   form.email.focus();
-			   toastWarning('이메일을(를) 4자 이상 입력해주세요.');
-			   return;
-		   }
-
-		   // nickname 이(가) 올바른지 체크
-
-		   form.nickname.value = form.nickname.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
-
-		   if (form.nickname.value.length == 0) {
-			   form.nickname.focus();
-			   toastWarning('별명을 입력해주세요.');
-			   return;
-		   }
-
-		   if (form.nickname.value.length < 4) {
-			   form.nickname.focus();
-			   toastWarning('별명을 4자 이상 입력해주세요.');
-			   return;
-		   }
-
-		    form.jop.value = form.jop.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
-
-		 	if (form.jop.value === "Choose a jop" || form.jopChoose.value === "") {
-				form.jop.focus();
-				toastWarning('직업을 선택해주세요.');
-				return;
-			}
-
-			 if ( validUsername != form.username.value ) {
-				$(form.username).next().focus();
-				toastWarning('아이디 중복체크를 해주세요.');
-				return;
+			 if ( form.username.value.length == 0 ) {
+				 clearUsernameInputMsg();
+				 return;
 			 }
 
-		   form.submit(); // 폼 발송
-		   submitJoinFormDone = true;
-	   }
+			 if ( form.username.value.length < 4 ) {
+				 clearUsernameInputMsg();
+				 return;
+			 }
+
+			 if ( validUsername == form.username.value ) return;
+
+			 if ( lastCheckedUsername == form.username.value ) return;
+
+			 lastCheckedUsername = form.username.value;
+
+			 clearUsernameInputMsg();
+
+			 fetch(
+				 'checkUsernameDup?username=' + form.username.value
+			 )
+				 .then(res => res.json())
+				 .then((rsData) => {
+					 if ( rsData.success ) {
+						 validUsername = form.username.value;
+					 }
+
+					 setUsernameInputMsg(rsData.success, rsData.msg);
+				 });
+		 }
+
+		 const joinForm = document['join-form'];
+
+		 const checkUsernameDupDebounce = _.debounce(() => checkUsernameDup(joinForm), 500);
+
+		 function clearUsernameInputMsg() {
+			 $(joinForm.username).removeClass('input-info  input-error');
+			 $(joinForm.username).next().removeClass('text-sky-300	 text-red-400');
+			 $(joinForm.username).next().empty();
+		 }
+
+		 function setUsernameInputMsg(isSuccess, msg) {
+			 if ( isSuccess ) $(joinForm.username).addClass('input-info ');
+			 if ( !isSuccess ) $(joinForm.username).addClass('input-error');
+
+			 $(joinForm.username).next().addClass(isSuccess ? 'text-sky-300	' : 'text-red-400');
+
+			 $(joinForm.username).next().text(msg);
+		 }
+
+		 let validUsername = '';
+		 let lastCheckedUsername = '';
+		 let submitJoinFormDone = false;
+	 function submitJoinForm(form) {
+
+		 if ( submitJoinFormDone ) return;
+		// username 이(가) 올바른지 체크
+
+		form.username.value = form.username.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
+
+		if (form.username.value.length == 0) {
+			form.username.focus();
+			toastWarning('아이디를 입력해주세요.');
+			return;
+		}
+
+		if (form.username.value.length < 4) {
+			form.username.focus();
+			toastWarning('아이디를 4자 이상 입력해주세요.');
+			return;
+		}
+
+		// password 이(가) 올바른지 체크
+
+		form.password.value = form.password.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
+
+		if (form.password.value.length == 0) {
+			form.password.focus();
+			toastWarning('비밀번호를 입력해주세요.');
+			return;
+		}
+
+		if (form.password.value.length < 4) {
+			   form.password.focus();
+			toastWarning('비밀번호를 4자 이상 입력해주세요.');
+			return;
+		}
+
+		// passwordConfirm 이(가) 올바른지 체크
+
+		form.passwordConfirm.value = form.passwordConfirm.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
+
+		if (form.passwordConfirm.value.length == 0) {
+			form.passwordConfirm.focus();
+			toastWarning('비밀번호 확인(을)를 입력해주세요.');
+			return;
+		}
+
+		if (form.passwordConfirm.value.length < 4) {
+			 form.passwordConfirm.focus();
+			 toastWarning('비밀번호 확인을(를) 4자 이상 입력해주세요.');
+			 return;
+		}
+
+		if ( form.password.value != form.passwordConfirm.value ) {
+			 form.passwordConfirm.focus();
+			 toastWarning('비밀번호를 확인이 일치하지 않습니다.');
+			 return;
+		}
+
+		 // email 이(가) 올바른지 체크
+
+		form.email.value = form.email.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
+
+		if (form.email.value.length == 0) {
+			form.email.focus();
+			toastWarning('이메일을(를) 입력해주세요.');
+			return;
+		}
+
+		if (form.email.value.length < 4) {
+			form.email.focus();
+			toastWarning('이메일을(를) 4자 이상 입력해주세요.');
+			return;
+		}
+
+		// nickname 이(가) 올바른지 체크
+
+		form.nickname.value = form.nickname.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
+
+		if (form.nickname.value.length == 0) {
+			form.nickname.focus();
+			toastWarning('별명을 입력해주세요.');
+			return;
+		}
+
+		if (form.nickname.value.length < 4) {
+			form.nickname.focus();
+			toastWarning('별명을 4자 이상 입력해주세요.');
+			return;
+		}
+
+		 form.jop.value = form.jop.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
+
+		  if (form.jop.value === "Choose a jop" || form.jopChoose.value === "") {
+			 form.jop.focus();
+			 toastWarning('직업을 선택해주세요.');
+			 return;
+		 }
+
+		  if ( validUsername != form.username.value ) {
+			 $(form.username).next().focus();
+			 toastWarning('아이디 중복체크를 해주세요.');
+			 return;
+		  }
+
+		form.submit(); // 폼 발송
+		submitJoinFormDone = true;
+	}
 	</script >
 
 </section >
