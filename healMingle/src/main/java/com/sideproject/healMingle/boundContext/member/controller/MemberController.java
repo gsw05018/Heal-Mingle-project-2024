@@ -1,6 +1,9 @@
 package com.sideproject.healMingle.boundContext.member.controller;
 
+import com.sideproject.healMingle.base.rsData.RsData;
+import com.sideproject.healMingle.base.ut.Ut;
 import com.sideproject.healMingle.boundContext.member.entity.Jop;
+import com.sideproject.healMingle.boundContext.member.entity.Member;
 import com.sideproject.healMingle.boundContext.member.service.MemberService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -28,10 +31,13 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public String join(@Valid JoinForm joinForm) {
-		memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getNickname(), joinForm.getEmail (), joinForm.getJop ());
+	public String join( @Valid JoinForm joinForm) {
+		RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getNickname(), joinForm.getEmail (), joinForm.getJop ());
+		if (joinRs.isFail ()) {
+			return "redirect:/usr/member/join?failMsg=" + Ut.url.encode ( joinRs.getMsg () );
+		}
 
-		return "redirect:/";
+		return "redirect:/?msg=" + Ut.url.encode ( joinRs.getMsg () );
 	}
 
 	@InitBinder

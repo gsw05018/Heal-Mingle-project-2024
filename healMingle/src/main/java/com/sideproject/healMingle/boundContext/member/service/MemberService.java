@@ -20,6 +20,10 @@ public class MemberService {
 
 	@Transactional
 	public RsData<Member> join( String username, String password, String nickname, String email, Jop jop ) {
+
+		if(findByUsername ( username ).isPresent ())
+			return RsData.of ( "F-1", "%s(은)는 사용중인 아이디 입니다" .formatted ( username ));
+
 		Member member = Member
 				.builder()
 				.username(username)
