@@ -1,26 +1,33 @@
 package com.sideproject.healMingle.boundContext.member.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import com.sideproject.healMingle.base.jpa.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
+
 
 @Entity
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
 @Getter
-public class Member {
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	private Long id;
+@Setter
+@ToString(callSuper = true )
+@SuperBuilder
+public class Member extends BaseEntity {
+
 	@Column(unique = true)
 	private String username;
 	@Setter

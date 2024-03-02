@@ -18,34 +18,40 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-@Controller
-@RequestMapping ( "/usr/member" )
-@RequiredArgsConstructor
+@Controller // Spring MVC 컨트룰러로 선언
+@RequestMapping ( "/usr/member" ) // 이 컨트룰러의 모든 핸들러 메서드에 대한 기본 URL 지정
+@RequiredArgsConstructor // final이나 @NonNull 필드에 대한 생성자 자동 생성
 public class MemberController {
 
 	private final MemberService memberService;
 	private final Rq rq;
 
-	@GetMapping("/join")
+
+	@GetMapping("/join") // "usr/member/join" Get 요청이 오면 실행
 	public String showJoin() {
 		return "usr/member/join";
 	}
+	// usr/member/join.html 반환
 
-	@PostMapping("/join")
-	public String join( @Valid JoinForm joinForm) {
+	@PostMapping("/join") // usr/member/join 으로 POST 요청이오면 실행
+	public String join( @Valid JoinForm joinForm) { // 클라이언트로부터 전달받은 JoinForm 객체 검증
 		RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getNickname(), joinForm.getEmail (), joinForm.getJop ());
-		if (joinRs.isFail ()) {
-			return rq.historyBack ( joinRs.getMsg () );
+		// MemberService를 통해 가입을 수행하고 결과를 받는다
+		if (joinRs.isFail ()) { // 가입이 실패할 시 historyBack 실행
+			return rq.historyBack ( joinRs.getMsg () ); // 실패 메시지 표현
 		}
 
 		return rq.redirect ( "/",joinRs.getMsg ());
+		// 성공후 메인페이지로 이동후 성공 메시지 반환
 	}
 
+	// 아이디 중복 체크
 	@GetMapping("/checkUsernameDup")
-	@ResponseBody
-	public RsData checkUsernameDup(String username){
-		return memberService.checkUsernameDup(username);
+	@ResponseBody // 이 메시지의 반환 값은 응답 본문에 직접 작성
+	public RsData checkUsernameDup(String username){ // 사용자 이름 중복 확인 요청을 처리
+		return memberService.checkUsernameDup(username); // MemberService를 통해 사용자 이름의 중복 여부를 확인하고 결과를 반환
 	}
 
 	@InitBinder
@@ -72,7 +78,9 @@ public class MemberController {
 		private String nickname;
 		@NotBlank
 		private String email;
+		private MultipartFile profileImg;
 		@NotNull
-		private Jop jop;
+		private Jop jop; // 직업을 나타내는 열거형
+
 	}
 }

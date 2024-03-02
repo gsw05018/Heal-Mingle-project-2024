@@ -1,5 +1,4 @@
 
-
     // toastr 라이브러리의 설정 옵션을 정의합니다.
     toastr.options = {
         closeButton: true, // 알림에 닫기 버튼을 활성화합니다.

@@ -34,24 +34,30 @@
 				</div >
 
 				<!--      비밀번호    -->
-				<label class = "w-full" >
+				<div class = "w-full" >
 					<input type = "password" class = "w-full input input-bordered " placeholder = "password" name = "password" />
-				</label >
+				</div >
 
 				<!--      비밀번호 입력 확인    -->
-				<label class = "w-full" >
+				<div class = "w-full" >
 					<input type = "password" class = "w-full input input-bordered" placeholder = "password check" name = "passwordConfirm" />
-				</label >
+				</div >
 
 				<!--      이메일    -->
-				<label class = "w-full" >
+				<div class = "w-full" >
 					<input type = "email" class = "w-full input input-bordered" placeholder = "email" name = "email" />
-				</label >
+				</div >
 
 				<!--      별명    -->
-				<label class = "w-full" >
+				<div class = "w-full" >
 					<input type = "text" class = "w-full input input-bordered" placeholder = "nickname" name = "nickname" />
-				</label >
+				</div >
+
+				<!--	프로필	-->
+				<div class="w-full preview-image">
+					<input type="file" id="profileImg" name="profileImg" class="w-full file-input file-input-bordered"
+						   accept="image/jpeg, image/png, image/gif">
+				</div>
 
 				<!--      직업    -->
 				<div class = "w-full" >
@@ -236,6 +242,50 @@
 		submitJoinFormDone = true;
 	}
 	</script >
+
+<!-- 파일 미리보기 스크립트 -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function(){
+			const imgInput = document.getElementById('profileImg');
+
+			imgInput.addEventListener('change', function(){
+				const parent = this.closest('.preview-image');
+				const selectedFile = this.files[0];
+
+				// 기존에 표시된 이미지 미리보기가 있으면 제거
+				const existingDisplay = parent.querySelector('.upload-display');
+				if (existingDisplay) {
+					parent.removeChild(existingDisplay);
+				}
+
+				if (selectedFile && selectedFile.type.match('image.*')) {
+<!--	img파일을 확인할 때 img/jpeg, img/png 등 모든 img파일 확인	-->
+					const reader = new FileReader();
+
+					reader.onload = function(e) {
+						// 파일 읽기 성공 시, 이미지 미리보기 생성 및 표시
+						const src = e.target.result;
+						const displayDiv = document.createElement('div');
+						displayDiv.className = 'upload-display';
+
+						const img = document.createElement('img');
+						img.src = src;
+						img.className = 'upload-thumb-wrap'; // 클래스 이름을 설정합니다.
+						// 직접 스타일 속성을 추가합니다.
+						img.style.margin = '10px 0px';
+						img.style.border = '2px solid #ddd';
+						img.style.width = 'auto'; // 또는 '100px'와 같이 특정 크기를 지정할 수 있습니다.
+						img.style.height = 'auto'; // 높이를 자동으로 조정하거나, '100px'와 같이 특정 높이를 지정할 수 있습니다.
+
+						displayDiv.appendChild(img);
+						parent.appendChild(displayDiv); // 미리보기 이미지를 .preview-image 내부에 추가
+					};
+
+					reader.readAsDataURL(selectedFile); // 선택된 파일을 Data URL로 읽어들임
+				}
+			});
+		});
+	</script>
 
 </section >
 
