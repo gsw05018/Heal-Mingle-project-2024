@@ -13,6 +13,7 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
+        default_batch_fetch_size: 100
         show_sql: true
         format_sql: true
         use_sql_comments: true
@@ -22,3 +23,6 @@ logging:
     com.ll.gramgram_ai: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
     org.hibernate.orm.jdbc.extract: TRACE
+custom:
+  genFile:
+    dirPath: c:/Temp/healMingle

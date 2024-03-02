@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+
 @Service
 // 이 클래스를 스프링 서비스 계층의 컴포넌트로 선언합니다.
 @RequiredArgsConstructor
@@ -42,6 +45,22 @@ public class GenFileService {
 				.build();
 
 		genFileRepository.save(genFile); // 생성된 GenFile 엔티티를 데이터베이스에 저장합니다.
+
+		File file = new File ( genFile.getFilePath() ); // GenFile 객체에서 파일이 저장될 전체 경로를 가져와 File 객체를 생성
+		// genFile.getFilePath() : 메서드를 호출하여 파일이 저장될 경로 얻는다
+
+		file.getParentFile ().mkdirs (); // 파잉리 저장되기 전에 파일이 저장될 부모 디렉터리(풀더)가 존재하는지 확인하고
+		// 없으면 해당 경로에 풀더 생성
+		// mkdirs : java.io.file 클래스의 메서드 중 하나로 지정된 경로에 풀더를 생성하는데 사용
+		// 지정된 경로의 마지막 요소에 해당하는 다렉터리 뿐만 아니라 필요한 모든 부모 디렉토리도 함께 생성이 가능하다
+
+		try {
+			multipartFile.transferTo ( file );
+			// multipartFile 객체를 사용하여 클라이언트로부터 받은 파일을 서버에 저장
+		} catch ( IOException e ){
+			throw new RuntimeException ( e );
+			// 파일 전송 중 IOException 발생할 경우 런타임 에외로 포장하여 다시 던진다
+		}
 
 		return genFile; // 저장된 GenFile 엔티티를 반환합니다.
 	}
