@@ -37,7 +37,7 @@ public class MemberController {
 
 	@PostMapping("/join") // usr/member/join 으로 POST 요청이오면 실행
 	public String join( @Valid JoinForm joinForm) { // 클라이언트로부터 전달받은 JoinForm 객체 검증
-		RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getNickname(), joinForm.getEmail (), joinForm.getJop ());
+		RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getNickname(), joinForm.getEmail (), joinForm.getProfileImg (),joinForm.getJop ());
 		// MemberService를 통해 가입을 수행하고 결과를 받는다
 		if (joinRs.isFail ()) { // 가입이 실패할 시 historyBack 실행
 			return rq.historyBack ( joinRs.getMsg () ); // 실패 메시지 표현

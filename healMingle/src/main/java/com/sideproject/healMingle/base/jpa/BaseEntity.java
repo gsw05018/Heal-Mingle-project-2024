@@ -42,4 +42,16 @@ public class BaseEntity {
 	@Transient // 아래 필드가 DB 필드가 되는 것을 막는다.
 	@Builder.Default
 	private Map <String, Object> extra = new LinkedHashMap <> ();
+
+	// 현재 객체의 클래스 이름을 가져와서 , 그 이름의 첫글자를 소문자로 변환한 후 나머지 이름을 그대로 붙어서 반환
+	public String getModelName(){
+
+		String simpleName = this.getClass ().getSimpleName ();
+		// 현재 객체의 'class' 객체를 반환, class 객체로부터 단순한 이름을 문자열로 반환
+		// ex) com.example.UserProfileImg 인 경우 UserProfileImg 을 반환한다
+		return Character.toLowerCase ( simpleName.charAt ( 0 )) + simpleName.substring ( 1 ) ;
+		// 첫 문자를 소문자로 반환한 후 클래스 이름의 첫 번째 문자를 제외한 나머지 문자열을 반환
+		// ex) UserProfileImg > userProfileImg
+
+	}
 }

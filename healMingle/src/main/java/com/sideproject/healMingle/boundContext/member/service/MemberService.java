@@ -1,6 +1,7 @@
 package com.sideproject.healMingle.boundContext.member.service;
 
 import com.sideproject.healMingle.base.rsData.RsData;
+import com.sideproject.healMingle.boundContext.genFile.service.GenFileService;
 import com.sideproject.healMingle.boundContext.member.entity.Jop;
 import com.sideproject.healMingle.boundContext.member.entity.Member;
 import com.sideproject.healMingle.boundContext.member.repository.MemberRepository;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -17,9 +19,10 @@ import java.util.Optional;
 public class MemberService {
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final GenFileService genFileService;
 
 	@Transactional // 이 메서드에서 수행되는 데이터베이스 작업을 트랜잭션으로 관리
-	public RsData<Member> join( String username, String password, String nickname, String email, Jop jop ) {
+	public RsData<Member> join( String username, String password, String nickname, String email, MultipartFile profileImg, Jop jop ) {
 
 		if(findByUsername ( username ).isPresent ()) // 제공된 사용자 이름으로 기존회원을 검색
 			return RsData.of ( "F-1", "%s(은)는 사용중인 아이디 입니다" .formatted ( username ));
@@ -35,6 +38,10 @@ public class MemberService {
 				.build(); // member 객체를 빌드
 
 		member = memberRepository.save(member); // 생성된 mebmer객체를 데이터베이스에 저장
+
+		if (profileImg != null) {
+			genFileService.save(member.getModelName(), member.getId(), "common", "profileImg", 0, profileImg);
+		}
 
 		return RsData.of ( "S-1", "회원가입이 완료되었습니다", member ); // 성공 응답과 함께 member 객체 반환
 	}
