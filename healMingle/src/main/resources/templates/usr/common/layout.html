@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang = "ko" >
-<head >
-	<meta charset = "UTF-8" >
-	<meta name = "viewport"
-		  content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" >
-	<meta http-equiv = "X-UA-Compatible" content = "ie=edge" >
+<html lang = "ko" xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.w3.org/1999/xhtml" >
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title layout:title-pattern = "$CONTENT_TITLE | $LAYOUT_TITLE" th:text = "Heal_Mingle" ></title >
 
 	<!-- 제이쿼리 불러오기 -->
 	<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" ></script >
 	<!-- Lodash는 _ 객체를 통해 함수형 프로그래밍을 지원하는 메서드를 제공-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" ></script >
 
 	<!-- toastr 불러오기 -->
 	<script src = "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" ></script >
@@ -18,10 +18,6 @@
 
 	<!-- 폰트어썸 아이콘 -->
 	<link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" >
-
-	<!-- 테일윈드 , 데이지 UI-->
-	<link href = "https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel = "stylesheet" type = "text/css" />
-	<script src = "https://cdn.tailwindcss.com" ></script >
 
 	<!-- 글꼴 -->
 	<link href = "https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel = "stylesheet" />
@@ -34,7 +30,6 @@
 		  integrity = "sha512-hGBKkjAVJUXoImyDezOKpzuY4LS1eTvJ4HTC/pbxn47x5zNzGA1vi3vFQhhOehWLTNHdn+2Yqh/IRNPw/8JF/A=="
 		  crossorigin = "anonymous" />
 
-	<script src="/resource/common/common.js"></script>
 
 	<!-- 버튼, 글꼴 스타일 -->
 	<style >
@@ -103,16 +98,23 @@
 	</style >
 </head >
 
+<!-- 테일윈드 , 데이지 UI-->
+<link href = "https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel = "stylesheet" type = "text/css" />
+<script src = "https://cdn.tailwindcss.com" ></script >
+
+<script src = "/resource/common/common.js" ></script >
 
 <body >
 
-<div >
+<div class="flex flex-col">
 	<header >
 		<!-- navbar -->
 		<div class = "navbar shadow-md shadow-inner flex justify-between" >
 			<!--  logo  -->
-			<div class = "p-2 w-72 h-16" >
-				<img src = "/resource/logoImg/NoColorLogo.png" alt = "로고" >
+			<div class = "p-3 h-8" >
+				<a href = "/" >
+					<img src = "/resource/logoImg/NoColorLogo.png" class = "object-cover w-full h-full" alt = "로고" >
+				</a >
 			</div >
 			<!--  menu  -->
 			<div class = "flex justify-evenly w-full text-lg" >
@@ -133,23 +135,24 @@
 					</div >
 				</div >
 				<div class = "dropdown dropdown-end" >
-					<div tabindex = "0" role = "button" class = "btn btn-ghost btn-circle avatar" >
+					<div tabindex = "0" class = "btn btn-ghost btn-circle avatar" >
+						<!-- 프로필 이미지 -->
 						<div class = "w-10 rounded-full" >
 							<img alt = "Tailwind CSS Navbar component"
 								 src = "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
 						</div >
 					</div >
+					<!-- 메뉴 -->
 					<ul tabindex = "0"
 						class = "menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52" >
-						<li >
-							<a class = "justify-between" >
-								내 정보
-							</a >
-						</li >
-						<li ><a >관리자</a ></li >
-						<li ><a href = "/usr/member/join" >회원가입</a ></li >
-						<li ><a >로그인</a ></li >
-						<li ><a >로그아웃</a ></li >
+						<li th:if="${@rq.logout}"><a href = "/usr/member/join" ><i
+								class = "fa-solid fa-user-plus" ></i > 회원가입</a ></li >
+						<li th:if="${@rq.logout}"><a href = "/usr/member/login" ><i
+								class = "fa-solid fa-arrow-right-to-bracket" ></i > 로그인</a ></li >
+						<li th:if="${@rq.admin}"><a ><i class = "fa-solid fa-user-secret" ></i >관리자</a ></li >
+						<li th:if="${@rq.login}"><a ><i class = "fa-solid fa-user" ></i >내 정보</a ></li >
+						<li th:if="${@rq.login}"><a href = "/usr/member/logout" ><i
+								class = "fa-solid fa-arrow-right-from-bracket" ></i >로그아웃</a ></li >
 					</ul >
 				</div >
 			</div >
@@ -161,7 +164,7 @@
 	</main >
 </div >
 
-<script>
+<script >
 	// URL에서 msg 파라미터의 값을 가져오는 함수
     function getMsgFromURL() {
         const url = new URL(window.location.href);
@@ -210,7 +213,7 @@
 		// 메시지를 표시한 후 해당 항목을 로컬 스토리지에서 제거합니다.
 	  }
 	});
-</script>
+</script >
 
 </body >
 </html >

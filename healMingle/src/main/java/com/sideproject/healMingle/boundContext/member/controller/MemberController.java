@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +30,14 @@ public class MemberController {
 	private final Rq rq;
 
 
+	@PreAuthorize ( "isAnonymous()" )
 	@GetMapping("/join") // "usr/member/join" Get 요청이 오면 실행
 	public String showJoin() {
 		return "usr/member/join";
 	}
 	// usr/member/join.html 반환
 
+	@PreAuthorize ( "isAnonymous()" )
 	@PostMapping("/join") // usr/member/join 으로 POST 요청이오면 실행
 	public String join( @Valid JoinForm joinForm) { // 클라이언트로부터 전달받은 JoinForm 객체 검증
 		RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getNickname(), joinForm.getEmail (), joinForm.getProfileImg (),joinForm.getJop ());
@@ -45,6 +48,12 @@ public class MemberController {
 
 		return rq.redirect ( "/",joinRs.getMsg ());
 		// 성공후 메인페이지로 이동후 성공 메시지 반환
+	}
+
+	@PreAuthorize ( "isAnonymous()" )
+	@GetMapping("/login")
+	public String showLogin(){
+		return "usr/member/login";
 	}
 
 	// 아이디 중복 체크

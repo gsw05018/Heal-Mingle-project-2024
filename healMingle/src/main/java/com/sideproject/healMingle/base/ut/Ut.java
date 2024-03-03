@@ -88,7 +88,7 @@ public class Ut {
 			return url;
 		}
 
-		private static String deleteQueryParam ( String url, String paramName ) {
+		public static String deleteQueryParam ( String url, String paramName ) {
 
 			int startPoint = url.indexOf ( paramName + "=" );
 			// paramName과 일치하는 쿼리 파라미터의 시작 인덱스를 찾는다
@@ -127,6 +127,14 @@ public class Ut {
 			// 새로운 쿼리 파라미터를 URL에 추가
 
 			return url;
+		}
+
+		public static String encodeWithTtl ( String s ) {
+			return withTtl(encode ( s ));
+		}
+
+		public static String withTtl ( String msg ) {
+			return msg + ";ttl=" + new Date().getTime ();
 		}
 	}
 }

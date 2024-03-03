@@ -1,5 +1,5 @@
 <!doctype html>
-<html layout:decorate = "~{usr/common/layout}" >
+<html layout:decorate = "~{usr/common/layout}" xmlns:th="http://www.thymeleaf.org">
 
 <head >
 	<title >회원가입</title >
@@ -13,21 +13,22 @@
 		<img src = "https://image.musinsa.com/mfile_s01/2019/03/18/156005c5baf40ff51a327f1c34f2975b203251.jpg"
 			 alt = "로그인 이미지" class = "h-full w-full object-cover rounded-3xl" >
 	</div >
-<!--  회원가입 공간	 -->
+<!--  회원가입 필드 -->
 	<div class = "w-full lg:w-3/5 flex flex-col items-center justify-center" >
-		<div class = "text-center" >
-			<h2 class = "block antialiased tracking-normal font-sans text-4xl leading-[1.3] text-inherit font-bold mb-4" >
-				HealMingle
-			</h2 >
+		<div class = "w-full text-center " >
+			<div class = "w-96 h-40 m-auto" >
+				<a href = "/" ><img src = "/resource/logoImg/NoColorLogo.png" alt = "로고" class="object-cover w-full h-full">
+				</a >
+			</div >
 			<h3 class = "block antialiased tracking-normal font-sans text-4xl leading-[1.3] text-inherit font-bold mb-4" >
-				Sing up
+				회원가입
 			</h3 >
 		</div >
 		<form th:action method="POST" name="join-form" onsubmit="submitJoinForm(this); return false;" class = "mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2"  enctype="multipart/form-data">
 			<div class = "mb-1 flex flex-col gap-6" >
 				<!--      아이디    -->
 				<div class = "w-full" >
-					<input type="text" name="username" placeholder="username" class=" w-full input input-bordered" autofocus
+					<input type="text" name="username" placeholder="ID" class=" w-full input input-bordered" autofocus
 						   maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
 						   onkeyup="checkUsernameDupDebounce();">
 					<div class="mt-2 text-sm"></div>
@@ -71,7 +72,7 @@
 						<option value = "DOCTOR" >의사</option >
 					</select >
 				</div >
-				<button class = "custom-btn btn-5 w-full bg-black text-white" ><span >Sing in</span >
+				<button class = "custom-btn btn-5 w-full bg-black text-white" ><span >회원가입</span >
 				</button >
 				<!--      로그인 그외 페이지 이동경로는 나중에 추가 예정    -->
 			</div >

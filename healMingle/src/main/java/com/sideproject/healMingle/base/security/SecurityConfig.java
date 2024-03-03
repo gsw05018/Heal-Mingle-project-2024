@@ -32,6 +32,8 @@ public class SecurityConfig{
 
 				.formLogin((formLogin) -> formLogin // 폼 로그인 구성을 위한 설정
 						.loginPage("/usr/member/login") // 사용자 정의 로그인 페이지 URL 설정
+						.successHandler ( new CustomSimpleUrlAuthenticationSuccessHandler () )
+						.failureHandler ( new CustomSimpleUrlAuthenticationFailureHandler () )
 				)
 				.logout((logout) -> logout // 로그아웃 구성을 위한 설정
 						.logoutRequestMatcher(new AntPathRequestMatcher("/usr/member/logout")) // 로그아웃 URL 설정
@@ -52,5 +54,13 @@ public class SecurityConfig{
 	// BCryptPasswordEncoder을 이용하여 비밀번호 암호화
 
 }
+// < login 관련 그 외 속성들 >
+// usernameParameter("username") : 로그인 폼에서 사용자 이름 필드의 이름을 설정
+// passwordParameter("password") : 로그인 폼에서 비밀번호 필드의 이름을 설정
+// defaultSuccessUrl("/defaultPath", true) : 로그인 성공 후 리다이렉션 할 기본 URL 설정
+// failureUrl("/login?error=true"): 로그인 실패 시 리다이렉션할 URL을 설정합니다. 실패 메시지를 표시하기 위한 쿼리 파라미터를 포함
 
-
+// < logout 관련 그 외 속성들 >
+// deleteCookies("cookieNames..."): 로그아웃 시 삭제할 쿠키의 이름을 설정합니다. 사용자 인증 정보를 쿠키에 저장한 경우, 이를 통해 쿠키를 안전하게 삭제할 수 있습니다.
+// clearAuthentication(true) : 로그아웃 시 보안 컨텍스트의 인증 정보를 지울지 여부를 설정합니다. 기본값은 true임
+// logoutUrl("/custom-logout"): 로그아웃을 처리할 URL을 설정, logoutRequestMatcher  대신 사용할 수 있으며, 기본 HTTP 메소드는 POST
