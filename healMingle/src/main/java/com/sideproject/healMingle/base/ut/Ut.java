@@ -78,5 +78,55 @@ public class Ut {
 				return null;
 			}
 		}
+
+		public static String modifyQueryParam(String url, String paramName, String paramValue){
+			url = deleteQueryParam(url, paramName);
+			// 지정된 paramName이 있ㅎ는 쿼리 파라미터를 URL에서 삭제
+			url  = addQueryParam(url, paramName, paramValue);
+			// 삭제 후, 새로운 paramName과 paramValue를 URL에 추가
+
+			return url;
+		}
+
+		private static String deleteQueryParam ( String url, String paramName ) {
+
+			int startPoint = url.indexOf ( paramName + "=" );
+			// paramName과 일치하는 쿼리 파라미터의 시작 인덱스를 찾는다
+			
+			if (startPoint == -1) return url;
+			// 찾지 못했다면, 변경 없이 URL 반환
+
+			int endPoint = url.substring ( startPoint ).indexOf ( "&" );
+			// 찾은 쿼리 파라미터의 끝 인덱스를 찾는다
+
+			if (endPoint == -1) {
+				return url.substring ( 0, startPoint -1 );
+			}
+			// & 를 찾지 못했다면, 해당 쿼리 파라미터가 마지막으로 그 앞까지의 URL 반환
+
+			String urlAfter = url.substring ( startPoint + endPoint + 1 );
+			// 찾은 쿼리 파라미터를 URL에서 제거
+
+			return url.substring ( 0, startPoint ) + urlAfter;
+
+		}
+
+		private static String addQueryParam ( String url, String paramName, String paramValue) {
+
+			if (!url.contains ( "?" )){
+				url = url + "?";
+			}
+			// URL에 "?"가 문자가 포함되어 있지 않으면, 쿼리 스트링 시작을 위해 ? 추가
+
+			if (!url.contains ( "?" ) && !url.contains ( "&" )){
+				url += "&";
+			}
+			// URL이 ? 또는 & 로 끝나지 않으면 새로운 쿼리 파라미터를 추가하기 위해 &를 추가
+
+			url += paramName + "=" + paramValue;
+			// 새로운 쿼리 파라미터를 URL에 추가
+
+			return url;
+		}
 	}
 }

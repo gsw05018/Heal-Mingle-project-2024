@@ -41,6 +41,9 @@ public class MemberService {
 
 		if (profileImg != null) {
 			genFileService.save(member.getModelName(), member.getId(), "common", "profileImg", 0, profileImg);
+			// 사용자가 파일을 업로드 안할 시 이 코드는 실행이 되지 않고
+			// 업로드 할 시 save에 메서드가 실행
+			// save(현재 저장되는 파일과 관련된 모데일 이름 member의 모델이름, 데이터베이스에 저장된 객체의 ID, 파일의 종류나 카테코리를 지정하는 문자열, 저장되는 파일의 구체적인 용도나 타입을 지정하는 문자열, 파일의 순서나 버번을 지정하는 숫자, 실제로 저장할 파일 객체)
 		}
 
 		return RsData.of ( "S-1", "회원가입이 완료되었습니다", member ); // 성공 응답과 함께 member 객체 반환

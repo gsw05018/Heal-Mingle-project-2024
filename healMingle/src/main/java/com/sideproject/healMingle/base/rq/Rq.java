@@ -203,6 +203,11 @@ public class Rq {
 
 	// 특정 URL로 리다이렉트하는 메서드
 	public String redirect(String url, String msg) {
-		return "redirect:" + url + "?msg=" + Ut.url.encode(msg);
+		return "redirect:" + Ut.url.modifyQueryParam ( url, "msg" , Ut.url.encode ( msg ));
+		// 혹시나 ?msg가 있을 경우 ?msg를 덮어씌워서 오류가 나지 않게 수정함
+		// String modifiedUrl = modifyQueryParam(url, "param2", "newValue2");
+		// ex) url = "http://example.com/page?param1=value1&param2=value2";
+		// deleteQueryParam을 호출하여 param2=value2를 URL에서 삭제후 URL http://example.com/page?param1=value1
+		// addQueryParam을 호출하여 param2=newValue2를 URL에 추가후 최종 URL: http://example.com/page?param1=value1&param2=newValue2
 	}
 }
